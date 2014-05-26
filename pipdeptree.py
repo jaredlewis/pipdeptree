@@ -190,10 +190,11 @@ def main():
 
     # show warnings about possibly confusing deps if found and
     # warnings are enabled
+    confusing = False
     if not args.nowarn:
         confusing = confusing_deps(req_map)
         if confusing:
-            print('Warning!!! Possible confusing dependencies found:', file=sys.stderr)
+            print('Failure!!! Conflicting dependencies found:', file=sys.stderr)
             for xs in confusing:
                 for i, (p, d) in enumerate(xs):
                     pkg = top_pkg_name(p)
@@ -214,6 +215,8 @@ def main():
                        top_pkg_str=top_pkg_str,
                        non_top_pkg_str=non_top_pkg_str)
     print(tree)
+    if confusing:
+        return 1
     return 0
 
 
